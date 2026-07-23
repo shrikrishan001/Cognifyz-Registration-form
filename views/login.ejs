@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Cognifyz IT Solutions</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- ================= LEFT PANEL ================= -->
+
+    <div class="col-lg-5 left-panel">
+
+        <div class="left-content">
+<!-- 
+            <div class="rocket">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div> -->
+
+            <div class="login-header">
+
+    <div class="login-logo">
+
+        <i class="bi bi-shield-lock-fill"></i>
+
+    </div>
+
+    <h1>
+
+        Welcome Back 👋
+
+    </h1>
+
+    <p>
+
+        Login to continue your journey with
+        <strong>Cognifyz IT Solutions</strong>
+
+    </p>
+
+</div>
+
+            <div class="tagline">
+                Secure Authentication System
+            </div>
+
+            <p class="description">
+                Access your account securely and continue managing your profile,
+                projects, and internship activities.
+            </p>
+
+            <div class="feature-box">
+
+                <div>
+                    <i class="bi bi-check-circle-fill"></i>
+                    Secure Login
+                </div>
+
+                <div>
+                    <i class="bi bi-check-circle-fill"></i>
+                    SQLite Database
+                </div>
+
+                <div>
+                    <i class="bi bi-check-circle-fill"></i>
+                    Protected Dashboard
+                </div>
+
+                <div>
+                    <i class="bi bi-check-circle-fill"></i>
+                    Fast Authentication
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= RIGHT PANEL ================= -->
+
+    <div class="col-lg-7 right-panel">
+
+        <div class="form-card">
+
+            <div class="text-end mb-3">
+
+                <button id="themeToggle" class="btn btn-dark">
+
+                    <i class="bi bi-moon-fill"></i> Dark Mode
+
+                </button>
+
+            </div>
+<div class="login-header">
+
+    <h1>Welcome Back 👋</h1>
+
+    <p>
+        Sign in to access your dashboard and manage your internship profile securely.
+    </p>
+
+</div>
+
+            <form action="/login" method="POST">
+                <div class="mb-4">
+
+    <label class="form-label">
+        Email Address
+    </label>
+
+    <div class="input-group custom-input">
+
+        <span class="input-group-text">
+            <i class="bi bi-envelope-fill"></i>
+        </span>
+
+        <input
+            type="email"
+            class="form-control"
+            name="email"
+            placeholder="Enter your email"
+            required>
+
+    </div>
+
+</div>
+               
+
+    
+
+<div class="mb-4">
+
+    <label class="form-label">
+        Password
+    </label>
+
+    <div class="input-group custom-input">
+
+        <span class="input-group-text">
+            <i class="bi bi-lock-fill"></i>
+        </span>
+
+        <input
+            type="password"
+            id="loginPassword"
+            class="form-control"
+            name="password"
+            placeholder="Enter Password">
+
+       <span class="input-group-text" id="loginTogglePassword">
+
+    <i class="bi bi-eye-fill"></i>
+
+</span>
+
+    </div>
+
+</div>
+                <div class="d-flex justify-content-between mb-4">
+
+                    <div class="form-check">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox">
+
+                        <label class="form-check-label">
+
+                            Remember Me
+
+                        </label>
+
+                    </div>
+
+                    <a href="#" class="text-decoration-none">
+
+                        Forgot Password?
+
+                    </a>
+
+                </div>
+
+                <button class="login-btn-main">
+
+    <i class="bi bi-box-arrow-in-right"></i>
+
+    Secure Login
+
+</button>
+
+
+<div class="divider">
+
+    <span>OR</span>
+
+</div>
+            </form>
+
+           <a href="/" class="register-btn">
+
+    <i class="bi bi-person-plus-fill"></i>
+
+    Create New Account
+
+</a>
+
+
+
+<div class="login-footer">
+
+    © 2026 Cognifyz IT Solutions
+
+</div>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script src="/js/script.js"></script>
+
+</body>
+
+</html>
+
