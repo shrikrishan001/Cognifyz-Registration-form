@@ -17,7 +17,7 @@ app.use(express.static("public"));
 
 app.use(
     session({
-        secret: "cognifyz_secret_key",
+        secret: process.env.SESSION_SECRET || "cognifyz_secret_key",
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -38,22 +38,6 @@ app.get("/", (req, res) => {
 // =============================
 app.get("/login", (req, res) => {
     res.render("login");
-});
-
-app.get("/dashboard", (req, res) => {
-
-    console.log("Session Data:", req.session);
-
-    console.log("Session User:", req.session.user);
-
-    if (!req.session.user) {
-        return res.send("Session Not Found");
-    }
-
-    res.render("dashboard", {
-        user: req.session.user
-    });
-
 });
 
 // =============================
@@ -84,11 +68,11 @@ app.post("/submit", (req, res) => {
         !district || !city || !address || !pincode ||
         !password || !confirmpassword
     ) {
-        return res.send(" Please fill all fields.");
+        return res.send("Please fill all fields.");
     }
 
     if (password !== confirmpassword) {
-        return res.send(" Passwords do not match.");
+        return res.send("Passwords do not match.");
     }
 
     db.run(
@@ -111,7 +95,7 @@ app.post("/submit", (req, res) => {
         function (err) {
 
             if (err) {
-                return res.send(" " + err.message);
+                return res.send(err.message);
             }
 
             res.render("result", {
@@ -157,15 +141,10 @@ app.post("/login", (req, res) => {
             if (user.password !== password) {
                 return res.send("Incorrect Password.");
             }
-               req.session.user = user;
-                    console.log("User Found:", user);
 
-                req.session.user = user;
+            req.session.user = user;
 
-                console.log("Session Saved:", req.session.user);
-
-                res.redirect("/dashboard");
-                        
+            res.redirect("/dashboard");
 
         }
     );
@@ -175,18 +154,6 @@ app.post("/login", (req, res) => {
 // =============================
 // Dashboard
 // =============================
-// app.get("/dashboard", (req, res) => {
-
-//     if (!req.session.user) {
-//         return res.redirect("/login");
-//     }
-
-//     res.render("dashboard", {
-//         user: req.session.user
-//     });
-
-// });
-
 app.get("/dashboard", (req, res) => {
 
     if (!req.session.user) {
@@ -205,20 +172,23 @@ app.get("/dashboard", (req, res) => {
 app.get("/logout", (req, res) => {
 
     req.session.destroy(() => {
-
         res.redirect("/login");
-
     });
 
 });
 
 // =============================
-// Server
+// Local Server (Only for localhost)
 // =============================
-const PORT = 3000;
+if (!process.env.VERCEL) {
+    const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server Running at http://localhost:${PORT}`);
+    });
+}
 
-    console.log(`🚀 Server Running at http://localhost:${PORT}`);
-
-});
+// =============================
+// Export for Vercel
+// =============================
+module.exports = app;

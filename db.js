@@ -1,17 +1,18 @@
 const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
-const db = new sqlite3.Database("./database/users.db", (err) => {
+// Absolute path to database
+const dbPath = path.join(__dirname, "database", "users.db");
 
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error("❌ Error:", err.message);
+        console.error("❌ SQLite Error:", err.message);
     } else {
         console.log("✅ SQLite Connected Successfully");
     }
-
 });
 
 db.serialize(() => {
-
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
 
@@ -42,8 +43,13 @@ db.serialize(() => {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 
         )
-    `);
-
+    `, (err) => {
+        if (err) {
+            console.error("❌ Table Creation Error:", err.message);
+        } else {
+            console.log("✅ Users table ready");
+        }
+    });
 });
 
 module.exports = db;
