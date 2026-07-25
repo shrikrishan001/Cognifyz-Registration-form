@@ -84,11 +84,11 @@ app.post("/submit", (req, res) => {
         !district || !city || !address || !pincode ||
         !password || !confirmpassword
     ) {
-        return res.send("❌ Please fill all fields.");
+        return res.send(" Please fill all fields.");
     }
 
     if (password !== confirmpassword) {
-        return res.send("❌ Passwords do not match.");
+        return res.send(" Passwords do not match.");
     }
 
     db.run(
@@ -111,7 +111,7 @@ app.post("/submit", (req, res) => {
         function (err) {
 
             if (err) {
-                return res.send("❌ " + err.message);
+                return res.send(" " + err.message);
             }
 
             res.render("result", {
@@ -151,11 +151,11 @@ app.post("/login", (req, res) => {
             }
 
             if (!user) {
-                return res.send("❌ Email not found.");
+                return res.send("Email not found.");
             }
 
             if (user.password !== password) {
-                return res.send("❌ Incorrect Password.");
+                return res.send("Incorrect Password.");
             }
                req.session.user = user;
                     console.log("User Found:", user);

@@ -592,7 +592,7 @@ body{
 .form-control:hover,
 .form-select:hover{
 
-    height:auto;
+    height:52px;
 
 }
 
@@ -615,6 +615,9 @@ body{
     background:white;
 
     cursor:pointer;
+    font-size: 18px;
+    border-right: none;
+    
 
 }
 
@@ -2099,5 +2102,29 @@ Login Professional UI
     margin-top:10px;
 
     font-size:16px;
+
+}
+
+
+/* ===== Bootstrap Dropdown Fix ===== */
+
+select,
+.form-select {
+
+    appearance: auto !important;
+    -webkit-appearance: menulist !important;
+    -moz-appearance: menulist !important;
+
+    select,
+.form-select{
+
+    appearance:auto !important;
+    -webkit-appearance:auto !important;
+    -moz-appearance:auto !important;
+
+    padding-right:15px;
+
+}
+    padding-right: 2.8rem !important;
 
 }

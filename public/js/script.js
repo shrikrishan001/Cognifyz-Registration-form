@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const country = document.getElementById("country");
     const state = document.getElementById("state");
-    const city = document.getElementById("city");
+  const postOffice = document.getElementById("post-office");
     const district = document.getElementById("district");
     const address = document.getElementById("address");
     const pincode = document.getElementById("pincode");
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (emailError) {
 
                     emailError.innerHTML =
-                        "❌ Enter a valid Email Address";
+                        "Enter a valid Email Address";
 
                     emailError.style.color =
                         "#dc3545";
@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (phoneError) {
 
                         phoneError.innerHTML =
-                        "❌ Enter a valid 10 digit Indian mobile number.";
+                        "Enter a valid 10 digit Indian mobile number.";
 
                         phoneError.style.color = "#dc3545";
 
@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (dobError) {
 
                     dobError.innerHTML =
-                    "❌ Future date is not allowed.";
+                    "Future date is not allowed.";
 
                     dobError.style.color = "#dc3545";
 
@@ -361,14 +361,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-            else if (age < 18) {
+            else if (age < 0) {
 
                 dob.style.border = "2px solid #dc3545";
 
                 if (dobError) {
 
-                    dobError.innerHTML =
-                    "❌ Minimum age should be 18 years.";
+                    // dobError.innerHTML =
+                    // "Minimum age should be 5 years.";
 
                     dobError.style.color = "#dc3545";
 
@@ -471,6 +471,27 @@ form.addEventListener("submit",function(e){
 
     let isValid=true;
 
+    const requiredFields = document.querySelectorAll(
+"#fullname, #email, #mobile, #dob, #gender, #country, #state, #district, #post-office, #pincode, #password, #confirmPassword"
+);
+
+requiredFields.forEach(field => {
+
+    if (!field) return;
+
+    if (field.value.trim() === "") {
+
+        field.classList.add("is-invalid");
+        isValid = false;
+
+    } else {
+
+        field.classList.remove("is-invalid");
+
+    }
+
+});
+
     // -------------------------
     // Full Name
     // -------------------------
@@ -498,7 +519,7 @@ form.addEventListener("submit",function(e){
 
     if(!emailRegex.test(email.value.trim())){
 
-        emailError.innerHTML="❌ Invalid Email";
+        emailError.innerHTML="Invalid Email";
 
         email.style.border="2px solid red";
 
@@ -525,7 +546,7 @@ form.addEventListener("submit",function(e){
         if(!mobileRegex.test(phone.value.trim())){
 
             phoneError.innerHTML=
-            "❌ Invalid Mobile Number";
+            "Invalid Mobile Number";
 
             phone.style.border="2px solid red";
 
@@ -543,45 +564,7 @@ form.addEventListener("submit",function(e){
 
     }
 
-    // -------------------------
-    // DOB
-    // -------------------------
-
-    let birth=new Date(dob.value);
-
-    let today=new Date();
-
-    let age=today.getFullYear()-birth.getFullYear();
-
-    let month=today.getMonth()-birth.getMonth();
-
-    if(month<0 ||
-      (month===0 &&
-       today.getDate()<birth.getDate())){
-
-        age--;
-
-    }
-
-    if(age<18 || birth>today){
-
-        dobError.innerHTML=
-        "❌ Age must be 18+";
-
-        dob.style.border="2px solid red";
-
-        isValid=false;
-
-    }
-
-    else{
-
-        dobError.innerHTML="";
-
-        dob.style.border="2px solid green";
-
-    }
-
+  
     // -------------------------
     // Password
     // -------------------------
@@ -604,7 +587,7 @@ form.addEventListener("submit",function(e){
     if(password.value!==confirmPassword.value){
 
         matchMessage.innerHTML=
-        "❌ Password Not Matched";
+        "Password Not Matched";
 
         matchMessage.style.color="red";
 
@@ -625,24 +608,24 @@ form.addEventListener("submit",function(e){
     // Empty Fields
     // -------------------------
 
-    const requiredFields=
-    document.querySelectorAll("[required]");
+//     const requiredFields=
+//     document.querySelectorAll("[required]");
 
-    requiredFields.forEach(field=>{
+//     requiredFields.forEach(field=>{
 
-        if(field.value.trim()===""){
+//         if(field.value.trim()===""){
 
-            field.style.border="2px solid red";
+//             field.style.border="2px solid red";
 
-            isValid=false;
+//             isValid=false;
 
-        }
+//         }
 
-    });
+//     });
 
-    // -------------------------
-    // Stop Form
-    // -------------------------
+//     // -------------------------
+//     // Stop Form
+//     // -------------------------
 
     if(!isValid){
 
@@ -932,7 +915,9 @@ const texts=[
 
 "Learn • Build • Grow",
 
-"Become Industry Ready"
+"Become Industry Ready",
+
+"Developed By Krishna Gupta"
 
 ];
 
@@ -1100,29 +1085,45 @@ if (pincode) {
 
                 const office = data[0].PostOffice[0];
 
+                console.log(postOffice);
+                console.log(postOffice.innerHTML)
+                console.log(data[0].PostOffice);
+                console.log(data[0].PostOffice.length)
+
                 if (country)
                     country.value = "India";
 
                 if (state)
                     state.value = office.State;
 
-                if (district)
-                    district.value = office.District;
+                if (district) {
+                    district.innerHTML = `
+                        <option value="${office.District}" selected>
+                            ${office.District}
+                        </option>`;
+                    
+                   }
 
-                if (city) {
+                if (postOffice) {
+                            postOffice.innerHTML = "";
 
-                    city.innerHTML = "";
-
+                            data[0].PostOffice.forEach(place => {
+                                postOffice.innerHTML += `
+                                    <option value="${place.Name}">
+                                        ${place.Name}
+                                    </option>`;
+                            });
+                        }
                     data[0].PostOffice.forEach(place => {
 
-                        city.innerHTML += `
+                        district.innerHTML += `
                         <option value="${place.Name}">
                             ${place.Name}
                         </option>`;
 
                     });
 
-                }
+                
 
             }
 
