@@ -1,3 +1,5 @@
+const path = require("path");
+
 require("dotenv").config();
 
 const express = require("express");
@@ -10,6 +12,13 @@ const app = express();
 // View Engine
 // =============================
 app.set("view engine", "ejs");
+
+const path = require("path");
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // =============================
 // Middleware
