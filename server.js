@@ -1,6 +1,8 @@
+require("dotenv").config();
+
 const express = require("express");
 const session = require("express-session");
-const db = require("./db");
+const supabase = require("./supabase");
 
 const app = express();
 
@@ -43,7 +45,7 @@ app.get("/login", (req, res) => {
 // =============================
 // Register
 // =============================
-app.post("/submit", (req, res) => {
+app.post("/submit", async (req, res) => {
 
      console.log("🔥 /submit route hit");
 
@@ -80,11 +82,21 @@ app.post("/submit", (req, res) => {
         return res.send("Passwords do not match.");
     }
 
-    db.run(
-        `INSERT INTO users
-        (fullname,email,phone,dob,gender,country,state,district,postoffice,address,password)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-        [
+
+    const { data: existingUser, error: checkError } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
+
+if (existingUser) {
+    return res.send("Email already registered.");
+}
+
+    const { error } = await supabase
+    .from("users")
+    .insert([
+        {
             fullname,
             email,
             phone,
@@ -95,64 +107,57 @@ app.post("/submit", (req, res) => {
             district,
             postoffice,
             address,
+            pincode,
             password
-        ],
-        function (err) {
-
-            if (err) {
-                return res.send(err.message);
-            }
-
-            res.render("result", {
-                fullname,
-                email,
-                countryCode,
-                phone,
-                dob,
-                gender,
-                country,
-                state,
-                district,
-                postoffice,
-                address,
-                pincode
-            });
-
         }
-    );
+    ]);
 
+if (error) {
+    return res.send(error.message);
+}
+
+res.render("result", {
+    fullname,
+    email,
+    countryCode,
+    phone,
+    dob,
+    gender,
+    country,
+    state,
+    district,
+    postoffice,
+    address,
+    pincode
 });
+});
+
+    
 
 // =============================
 // Login
 // =============================
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
 
     const { email, password } = req.body;
 
-    db.get(
-        "SELECT * FROM users WHERE email=?",
-        [email],
-        (err, user) => {
+    const { data: user, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("email", email)
+        .single();
 
-            if (err) {
-                return res.send("Database Error");
-            }
+    if (error || !user) {
+        return res.send("Email not found.");
+    }
 
-            if (!user) {
-                return res.send("Email not found.");
-            }
+    if (user.password !== password) {
+        return res.send("Incorrect Password.");
+    }
 
-            if (user.password !== password) {
-                return res.send("Incorrect Password.");
-            }
+    req.session.user = user;
 
-            req.session.user = user;
-
-            res.redirect("/dashboard");
-
-        }
-    );
+    res.redirect("/dashboard");
 
 });
 
