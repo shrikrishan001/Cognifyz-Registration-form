@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const country = document.getElementById("country");
     const state = document.getElementById("state");
-  const postOffice = document.getElementById("post-office");
+  const postoffice = document.getElementById("postoffice");
     const district = document.getElementById("district");
     const address = document.getElementById("address");
     const pincode = document.getElementById("pincode");
@@ -133,38 +133,42 @@ document.addEventListener("DOMContentLoaded", function () {
         // ==========================================
     // Welcome Message
     // ==========================================
+if (fullname) {
 
-    if (fullname) {
+    fullname.addEventListener("input", function () {
 
-        fullname.addEventListener("input", function () {
+        // Sirf alphabets aur spaces allow
+        this.value = this.value.replace(/[^A-Za-z ]/g, "");
 
-            const name = fullname.value.trim();
+        const name = this.value.trim();
 
-            if (welcomeText) {
+        // Welcome Text
+        if (welcomeText) {
 
-                if (name === "") {
+            if (name === "") {
 
-                    welcomeText.innerHTML = "";
+                welcomeText.innerHTML = "";
 
-                } else {
+            } else {
 
-                    welcomeText.innerHTML =
-                        `👋 Welcome <b>${name}</b>`;
-
-                }
-
-            }
-
-            if (liveName) {
-
-                liveName.innerText =
-                    name === "" ? "Guest User" : name;
+                welcomeText.innerHTML =
+                    `👋 Welcome <b>${name}</b>`;
 
             }
 
-        });
+        }
 
-    }
+        // Live Name
+        if (liveName) {
+
+            liveName.innerText =
+                name === "" ? "Guest User" : name;
+
+        }
+
+    });
+
+}
 
     // ==========================================
     // Live Email Preview
@@ -447,19 +451,32 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
     // Register Button Loading
     // ==========================================
+if (form && registerBtn) {
 
-    if (form && registerBtn) {
+    form.addEventListener("submit", function (e) {
 
-        form.addEventListener("submit", function () {
+        // Browser validation
+        if (!form.checkValidity()) {
+            return;
+        }
 
-            registerBtn.disabled = true;
+        registerBtn.disabled = true;
 
-            registerBtn.innerHTML =
-            '<span class="spinner-border spinner-border-sm me-2"></span>Registering...';
+        registerBtn.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-2"></span>Registering...';
 
-        });
+        // Agar 10 sec tak response na aaye to button wapas enable ho jaye
+        setTimeout(() => {
 
-    }
+            registerBtn.disabled = false;
+
+            registerBtn.innerHTML = "Register";
+
+        }, 10000);
+
+    });
+
+}
 
     // ==========================================
 // Final Form Validation
@@ -472,7 +489,7 @@ form.addEventListener("submit",function(e){
     let isValid=true;
 
     const requiredFields = document.querySelectorAll(
-"#fullname, #email, #mobile, #dob, #gender, #country, #state, #district, #post-office, #pincode, #password, #confirmPassword"
+"#fullname, #email, #phone, #dob, #gender, #country, #state, #district, #postoffice, #pincode, #password, #confirmPassword"
 );
 
 requiredFields.forEach(field => {
@@ -627,15 +644,19 @@ requiredFields.forEach(field => {
 //     // Stop Form
 //     // -------------------------
 
-    if(!isValid){
+    if (!isValid) {
 
-        e.preventDefault();
+    e.preventDefault();
 
-        alert("❌ Please fill all details correctly.");
+    registerBtn.disabled = false;
 
-        return;
+    registerBtn.innerHTML = "Register";
 
-    }
+    alert("❌ Please fill all details correctly.");
+
+    return;
+
+}
 
     registerBtn.innerHTML=
     '<span class="spinner-border spinner-border-sm"></span> Registering...';
@@ -1079,16 +1100,15 @@ if (pincode) {
 
             const data = await response.json();
 
+            console.log(data);
+
             if (
-                data[0].Status === "Success"
+                data[0].Status === "Success" &&
+                data[0].PostOffice &&
+                Array.isArray(data[0].PostOffice)
             ) {
 
                 const office = data[0].PostOffice[0];
-
-                console.log(postOffice);
-                console.log(postOffice.innerHTML)
-                console.log(data[0].PostOffice);
-                console.log(data[0].PostOffice.length)
 
                 if (country)
                     country.value = "India";
@@ -1098,44 +1118,33 @@ if (pincode) {
 
                 if (district) {
                     district.innerHTML = `
-                        <option value="${office.District}" selected>
+                        <option value="${office.District}">
                             ${office.District}
                         </option>`;
-                    
-                   }
+                }
 
-                if (postOffice) {
-                            postOffice.innerHTML = "";
+                if (postoffice) {
 
-                            data[0].PostOffice.forEach(place => {
-                                postOffice.innerHTML += `
-                                    <option value="${place.Name}">
-                                        ${place.Name}
-                                    </option>`;
-                            });
-                        }
+                    postoffice.innerHTML = "";
+
                     data[0].PostOffice.forEach(place => {
 
-                        district.innerHTML += `
-                        <option value="${place.Name}">
-                            ${place.Name}
-                        </option>`;
+                        postoffice.innerHTML += `
+                            <option value="${place.Name}">
+                                ${place.Name}
+                            </option>`;
 
                     });
 
-                
+                }
 
-            }
-
-            else {
+            } else {
 
                 alert("Invalid PIN Code");
 
             }
 
-        }
-
-        catch (err) {
+        } catch (err) {
 
             console.log(err);
 
@@ -1146,7 +1155,5 @@ if (pincode) {
 }
 
 console.log("✅ Part 6 Loaded Successfully");
-
-    console.log("✅ Script Loaded Successfully");
-
+console.log("✅ Script Loaded Successfully");
 });

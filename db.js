@@ -32,9 +32,9 @@ db.serialize(() => {
 
             state TEXT,
 
-            city TEXT,
-
             district TEXT,
+
+            postoffice TEXT,
 
             address TEXT,
 

@@ -45,6 +45,10 @@ app.get("/login", (req, res) => {
 // =============================
 app.post("/submit", (req, res) => {
 
+     console.log("🔥 /submit route hit");
+
+    console.log(req.body);
+
     const {
         fullname,
         email,
@@ -55,17 +59,18 @@ app.post("/submit", (req, res) => {
         country,
         state,
         district,
-        city,
+        postoffice,
         address,
         pincode,
         password,
         confirmpassword
     } = req.body;
 
+
     if (
         !fullname || !email || !countryCode || !phone ||
         !dob || !gender || !country || !state ||
-        !district || !city || !address || !pincode ||
+        !district || ! postoffice || !address || !pincode ||
         !password || !confirmpassword
     ) {
         return res.send("Please fill all fields.");
@@ -77,7 +82,7 @@ app.post("/submit", (req, res) => {
 
     db.run(
         `INSERT INTO users
-        (fullname,email,phone,dob,gender,country,state,district,city,address,password)
+        (fullname,email,phone,dob,gender,country,state,district,postoffice,address,password)
         VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
         [
             fullname,
@@ -88,7 +93,7 @@ app.post("/submit", (req, res) => {
             country,
             state,
             district,
-            city,
+            postoffice,
             address,
             password
         ],
@@ -108,7 +113,7 @@ app.post("/submit", (req, res) => {
                 country,
                 state,
                 district,
-                city,
+                postoffice,
                 address,
                 pincode
             });

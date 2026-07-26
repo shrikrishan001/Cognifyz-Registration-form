@@ -19,8 +19,6 @@
 
 </head>
 
-<script src="/js/script.js"></script>
-
 <body style="background:#f4f7fc;">
 
 <div class="container py-5">
@@ -32,6 +30,18 @@
             <div class="card shadow-lg border-0 rounded-4">
 
                 <div class="card-body p-5">
+
+                    <div class="d-flex justify-content-end mb-3">
+
+    <a href="/login" class="btn btn-primary">
+
+        <i class="bi bi-box-arrow-in-right"></i>
+
+        Login
+
+    </a>
+
+</div>
 
                     <div class="text-center">
 
@@ -102,8 +112,8 @@
                         </tr>
 
                         <tr>
-                            <th>City</th>
-                            <td><%= city %></td>
+                            <th>post-Office</th>
+                            <td><%= postoffice %></td>
                         </tr>
 
                         <tr>
@@ -139,6 +149,8 @@
 
                         </button>
 
+                    
+
                     </div>
 
                 </div>
@@ -152,5 +164,8 @@
 </div>
 
 </body>
+
+
+<script src="/js/script.js"></script>
 
 </html>
